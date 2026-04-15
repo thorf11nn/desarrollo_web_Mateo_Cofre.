@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Miembros - Calidad de Vida DCC</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav aria-label="Navegación principal">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="registro_miembros.html">Registro de Miembros</a></li>
+                <li><a href="informar_actividades.html">Informar Actividad</a></li>
+                <li><a href="listado_miembros.html">Directorio</a></li>
+                <li><a href="indicadores.html">Indicadores</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h1>Registro en la Comunidad DCC</h1>
+            <p>Completa tus datos para unirte a las actividades del Área de Calidad de Vida.</p>
+            <p class="nota-obligatorio">Los campos marcados con <strong>*</strong> son obligatorios.</p>
+
+            <form id="form-registro">
+
+                <fieldset>
+                    <legend>Datos Personales y de Contacto</legend>
+
+                    <label for="nombre">Nombre completo *</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Ej: Ana González">
+                    <span class="error" id="error-nombre">Debe ingresar su nombre completo.</span>
+
+                    <label for="email">Correo electrónico *</label>
+                    <input type="email" id="email" name="email" placeholder="usuario@dcc.uchile.cl">
+                    <span class="error" id="error-email">Ingrese un correo electrónico válido.</span>
+
+                    <label for="telefono">Número de teléfono (opcional)</label>
+                    <input type="tel" id="telefono" name="telefono" placeholder="+56 9 1234 5678">
+                    <span class="error" id="error-telefono">Ingrese un número válido (ej: +56912345678).</span>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Relación con el Departamento</legend>
+
+                    <label for="tipo-miembro">Selecciona tu rol en el DCC *</label>
+                    <select id="tipo-miembro" name="tipo-miembro">
+                        <option value="">-- Seleccione una opción --</option>
+                        <option value="estudiante-pre">Estudiante de Pregrado</option>
+                        <option value="estudiante-post">Estudiante de Postgrado</option>
+                        <option value="academico">Académico(a)</option>
+                        <option value="funcionario">Funcionario(a)</option>
+                    </select>
+                    <span class="error" id="error-tipo">Debe seleccionar su rol en el DCC.</span>
+                </fieldset>
+
+                <fieldset id="campos-estudiante-pre" class="campos-dinamicos">
+                    <legend>Datos de Pregrado</legend>
+
+                    <label for="carrera">Carrera *</label>
+                    <input type="text" id="carrera" name="carrera" placeholder="Ej: Ingeniería Civil en Computación">
+                    <span class="error" id="error-carrera">Debe ingresar su carrera.</span>
+
+                    <label for="anio-ingreso">Año de ingreso *</label>
+                    <input type="number" id="anio-ingreso" name="anio-ingreso" placeholder="Ej: 2022" min="2000" max="2026">
+                    <span class="error" id="error-anio">Ingrese un año de ingreso válido.</span>
+                </fieldset>
+
+                <fieldset id="campos-estudiante-post" class="campos-dinamicos">
+                    <legend>Datos de Postgrado</legend>
+
+                    <label for="programa">Programa *</label>
+                    <input type="text" id="programa" name="programa" placeholder="Ej: Magíster en Ciencias de la Computación">
+                    <span class="error" id="error-programa">Debe ingresar su programa de postgrado.</span>
+
+                    <label for="tutor">Nombre del tutor/a (opcional)</label>
+                    <input type="text" id="tutor" name="tutor" placeholder="Ej: Dr. Juan Pérez">
+                </fieldset>
+
+                <fieldset id="campos-academico" class="campos-dinamicos">
+                    <legend>Datos Académicos</legend>
+
+                    <label for="area-investigacion">Área de investigación *</label>
+                    <input type="text" id="area-investigacion" name="area-investigacion" placeholder="Ej: Inteligencia Artificial">
+                    <span class="error" id="error-area">Debe ingresar su área de investigación.</span>
+
+                    <label for="jerarquia">Jerarquía *</label>
+                    <select id="jerarquia" name="jerarquia">
+                        <option value="">-- Seleccione --</option>
+                        <option value="instructor">Instructor(a)</option>
+                        <option value="asistente">Profesor(a) Asistente</option>
+                        <option value="asociado">Profesor(a) Asociado(a)</option>
+                        <option value="titular">Profesor(a) Titular</option>
+                    </select>
+                    <span class="error" id="error-jerarquia">Debe seleccionar su jerarquía.</span>
+                </fieldset>
+
+                <fieldset id="campos-funcionario" class="campos-dinamicos">
+                    <legend>Datos del Funcionario</legend>
+
+                    <label for="unidad">Área o unidad de trabajo *</label>
+                    <input type="text" id="unidad" name="unidad" placeholder="Ej: Secretaría de Estudios">
+                    <span class="error" id="error-unidad">Debe ingresar su área o unidad de trabajo.</span>
+                </fieldset>
+
+                <button type="submit">Completar Registro</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Área de Calidad de Vida - Departamento de Ciencias de la Computación</p>
+    </footer>
+
+    <script src="validaciones.js"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directorio de Miembros - Calidad de Vida DCC</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav aria-label="Navegación principal">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="registro_miembros.html">Registro de Miembros</a></li>
+                <li><a href="informar_actividades.html">Informar Actividad</a></li>
+                <li><a href="listado_miembros.html">Directorio</a></li>
+                <li><a href="indicadores.html">Indicadores</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="busqueda-filtros">
+            <h1>Directorio de la Comunidad DCC</h1>
+            <p>Utiliza los filtros para encontrar miembros según su rol u ordenar la lista.</p>
+
+            <fieldset>
+                <legend>Filtros de Búsqueda</legend>
+                <form id="form-filtros">
+                    <label for="filtro-tipo">Filtrar por tipo</label>
+                    <select id="filtro-tipo" name="filtro-tipo">
+                        <option value="todos">Todos los miembros</option>
+                        <option value="estudiante-pre">Estudiantes de Pregrado</option>
+                        <option value="estudiante-post">Estudiantes de Postgrado</option>
+                        <option value="academico">Académicos(as)</option>
+                        <option value="funcionario">Funcionarios(as)</option>
+                    </select>
+
+                    <label for="orden-datos">Ordenar por</label>
+                    <select id="orden-datos" name="orden-datos">
+                        <option value="nombre-asc">Nombre (A → Z)</option>
+                        <option value="nombre-desc">Nombre (Z → A)</option>
+                        <option value="email">Correo electrónico</option>
+                    </select>
+
+                    <button type="button" id="btn-aplicar">Aplicar Filtros</button>
+                </form>
+            </fieldset>
+        </section>
+
+        <section id="lista-resultados">
+            <h2>Resultados</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Rol</th>
+                        <th scope="col">Correo electrónico</th>
+                        <th scope="col">Actividades</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-cuerpo">
+                    <tr>
+                        <td>Ana Torres</td>
+                        <td>Estudiante Pregrado</td>
+                        <td>atorres@dcc.uchile.cl</td>
+                        <td><a href="#">Ver actividades</a></td>
+                    </tr>
+                    <tr>
+                        <td>Juan Pérez</td>
+                        <td>Estudiante Pregrado</td>
+                        <td>jperez@dcc.uchile.cl</td>
+                        <td><a href="#">Ver actividades</a></td>
+                    </tr>
+                    <tr>
+                        <td>Dra. Elena Gómez</td>
+                        <td>Académica</td>
+                        <td>egomez@dcc.uchile.cl</td>
+                        <td><a href="#">Ver actividades</a></td>
+                    </tr>
+                    <tr>
+                        <td>Carlos Muñoz</td>
+                        <td>Funcionario</td>
+                        <td>cmunoz@dcc.uchile.cl</td>
+                        <td><a href="#">Ver actividades</a></td>
+                    </tr>
+                    <tr>
+                        <td>María Soto</td>
+                        <td>Estudiante Postgrado</td>
+                        <td>msoto@dcc.uchile.cl</td>
+                        <td><a href="#">Ver actividades</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <nav aria-label="Paginación de resultados">
+            <ul class="paginacion">
+                <li><a href="#" aria-label="Página anterior">« Anterior</a></li>
+                <li><a href="#" class="activo" aria-current="page">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#" aria-label="Página siguiente">Siguiente »</a></li>
+            </ul>
+        </nav>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Área de Calidad de Vida - Departamento de Ciencias de la Computación</p>
+    </footer>
+
+    <script src="listado.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indicadores y Métricas - Calidad de Vida DCC</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav aria-label="Navegación principal">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="registro_miembros.html">Registro de Miembros</a></li>
+                <li><a href="informar_actividades.html">Informar Actividad</a></li>
+                <li><a href="listado_miembros.html">Directorio</a></li>
+                <li><a href="indicadores.html">Indicadores</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="resumen-metricas">
+            <h1>Panel de Indicadores</h1>
+            <p>Visualización de la participación y diversidad de actividades en la comunidad DCC. Los datos mostrados son de ejemplo.</p>
+
+            <div class="contenedor-graficos">
+                <article class="grafico-card">
+                    <h2>Distribución por Tipo de Miembro</h2>
+                    <figure>
+                        <canvas id="grafico-miembros" width="400" height="250"></canvas>
+                        <figcaption>Proporción de Estudiantes de Pregrado, Postgrado, Académicos y Funcionarios registrados.</figcaption>
+                    </figure>
+                </article>
+
+                <article class="grafico-card">
+                    <h2>Actividades por Categoría</h2>
+                    <figure>
+                        <canvas id="grafico-actividades" width="400" height="250"></canvas>
+                        <figcaption>Frecuencia de actividades Deportivas, Artísticas, Tecnológicas, Sociales y Recreativas.</figcaption>
+                    </figure>
+                </article>
+            </div>
+        </section>
+
+        <section id="datos-clave">
+            <h2>Cifras Destacadas</h2>
+            <div class="stats-grid">
+                <article class="stat-item">
+                    <h3>Total Miembros</h3>
+                    <p class="cifra">124</p>
+                </article>
+                <article class="stat-item">
+                    <h3>Actividades Informadas</h3>
+                    <p class="cifra">56</p>
+                </article>
+                <article class="stat-item">
+                    <h3>Horas Semanales Promedio</h3>
+                    <p class="cifra">4.2</p>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Área de Calidad de Vida - DCC</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="indicadores.js"></script>
+</body>
+</html>
