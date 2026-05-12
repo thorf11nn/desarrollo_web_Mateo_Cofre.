@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informar Actividad - Calidad de Vida DCC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <nav aria-label="Navegación principal">
+            <ul>
+                <li><a href="{{ url_for('index') }}">Inicio</a></li>
+                <li><a href="{{ url_for('registro_miembros') }}">Registro de Miembros</a></li>
+                <li><a href="{{ url_for('informar_actividades') }}">Informar Actividad</a></li>
+                <li><a href="{{ url_for('listado_miembros') }}">Directorio</a></li>
+                <li><a href="{{ url_for('indicadores') }}">Indicadores</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alerta {{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <section>
+            <h1>Registrar Nueva Actividad</h1>
+            <p>Comparte con la comunidad las actividades extracurriculares que realizas.</p>
+            <p class="nota-obligatorio">Los campos marcados con <strong>*</strong> son obligatorios.</p>
+
+            <form id="form-actividad" action="{{ url_for('procesar_actividad') }}" method="POST" enctype="multipart/form-data">
+
+                <fieldset>
+                    <legend>Miembro</legend>
+                    <label for="miembro_id">Selecciona tu nombre *</label>
+                    <select id="miembro_id" name="miembro_id">
+                        <option value="">-- Seleccione un miembro --</option>
+                        {% for m in miembros %}
+                        <option value="{{ m.id }}">{{ m.nombre }} ({{ m.rol }})</option>
+                        {% endfor %}
+                    </select>
+                    <span class="error" id="error-miembro">Debe seleccionar un miembro.</span>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Detalles de la Actividad</legend>
+
+                    <label for="nombre-actividad">Nombre de la actividad *</label>
+                    <input type="text" id="nombre-actividad" name="nombre-actividad" placeholder="Ej: Taller de Fotografía">
+                    <span class="error" id="error-nombre-act">Debe ingresar el nombre de la actividad.</span>
+
+                    <label for="tipo-actividad">Categoría *</label>
+                    <select id="tipo-actividad" name="tipo-actividad">
+                        <option value="">-- Seleccione una categoría --</option>
+                        <option value="artistica">Artística</option>
+                        <option value="deportiva">Deportiva</option>
+                        <option value="tecnologica">Tecnológica</option>
+                        <option value="social">Social</option>
+                        <option value="recreativa">Recreativa</option>
+                    </select>
+                    <span class="error" id="error-tipo-act">Debe seleccionar una categoría.</span>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Horarios</legend>
+
+                    <fieldset id="fieldset-dias">
+                        <legend>Días de la semana *</legend>
+                        <div class="grupo-checkboxes">
+                            <label class="label-checkbox"><input type="checkbox" name="dias" value="lunes"> Lunes</label>
+                            <label class="label-checkbox"><input type="checkbox" name="dias" value="martes"> Martes</label>
+                            <label class="label-checkbox"><input type="checkbox" name="dias" value="miercoles"> Miércoles</label>
+                            <label class="label-checkbox"><input type="checkbox" name="dias" value="jueves"> Jueves</label>
+                            <label class="label-checkbox"><input type="checkbox" name="dias" value="viernes"> Viernes</label>
+                            <label class="label-checkbox"><input type="checkbox" name="dias" value="sabado"> Sábado</label>
+                            <label class="label-checkbox"><input type="checkbox" name="dias" value="domingo"> Domingo</label>
+                        </div>
+                        <span class="error" id="error-dias">Debe seleccionar al menos un día.</span>
+                    </fieldset>
+
+                    <label for="hora-inicio">Hora de inicio *</label>
+                    <input type="time" id="hora-inicio" name="hora-inicio">
+                    <span class="error" id="error-hora-inicio">Debe indicar la hora de inicio.</span>
+
+                    <label for="hora-fin">Hora de término *</label>
+                    <input type="time" id="hora-fin" name="hora-fin">
+                    <span class="error" id="error-hora-fin">Debe indicar la hora de término.</span>
+                    <span class="error" id="error-rango-horas">La hora de término debe ser posterior a la de inicio.</span>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Evidencias</legend>
+                    <p><small>Debes adjuntar al menos un archivo (foto o video) y un enlace a contenido propio.</small></p>
+
+                    <label for="archivo-evidencia">Subir foto o video *</label>
+                    <input type="file" id="archivo-evidencia" name="archivo-evidencia" accept="image/*,video/*">
+                    <span class="error" id="error-archivo">Debe adjuntar al menos un archivo multimedia.</span>
+
+                    <label for="enlace-evidencia">Enlace externo (URL) *</label>
+                    <input type="url" id="enlace-evidencia" name="enlace-evidencia" placeholder="https://mi-portafolio.com">
+                    <span class="error" id="error-enlace">Debe ingresar un enlace válido que comience con http:// o https://</span>
+                </fieldset>
+
+                <button type="submit">Guardar Actividad</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Área de Calidad de Vida - Departamento de Ciencias de la Computación</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='validaciones.js') }}"></script>
+</body>
+</html>

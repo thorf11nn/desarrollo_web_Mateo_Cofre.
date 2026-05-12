@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ miembro.nombre }} - Calidad de Vida DCC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <nav aria-label="Navegación principal">
+            <ul>
+                <li><a href="{{ url_for('index') }}">Inicio</a></li>
+                <li><a href="{{ url_for('registro_miembros') }}">Registro de Miembros</a></li>
+                <li><a href="{{ url_for('informar_actividades') }}">Informar Actividad</a></li>
+                <li><a href="{{ url_for('listado_miembros') }}">Directorio</a></li>
+                <li><a href="{{ url_for('indicadores') }}">Indicadores</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="detalle-miembro">
+            <h1>{{ miembro.nombre }}</h1>
+
+            <fieldset>
+                <legend>Datos Personales</legend>
+
+                <p><strong>Rol:</strong> {{ miembro.rol }}</p>
+                <p><strong>Correo:</strong> {{ miembro.email }}</p>
+
+                {% if miembro.telefono %}
+                <p><strong>Teléfono:</strong> {{ miembro.telefono }}</p>
+                {% endif %}
+
+                <p><strong>Comuna:</strong> {{ miembro.comuna.nombre }}</p>
+                <p><strong>Región:</strong> {{ miembro.comuna.region.nombre }}</p>
+                <p><strong>Fecha de registro:</strong> {{ miembro.fecha_registro.strftime('%d/%m/%Y %H:%M') }}</p>
+            </fieldset>
+
+            <section id="actividades-miembro">
+                <h2>Actividades registradas</h2>
+
+                {% if miembro.actividades %}
+                    {% for actividad in miembro.actividades %}
+                    <article class="tarjeta">
+                        <h3>{{ actividad.nombre }}</h3>
+                        <p><strong>Categoría:</strong> {{ actividad.tipo }}</p>
+                        <p><strong>Día:</strong> {{ actividad.dia }}</p>
+                        <p><strong>Hora de inicio:</strong> {{ actividad.hora_inicio }}</p>
+                        <p><strong>Duración:</strong> {{ actividad.duracion }}</p>
+
+                        {% if actividad.descripcion %}
+                        <p><strong>Descripción:</strong> {{ actividad.descripcion }}</p>
+                        {% endif %}
+
+                        {% if actividad.enlace %}
+                        <p><strong>Enlace:</strong> <a href="{{ actividad.enlace }}" target="_blank" rel="noopener noreferrer">{{ actividad.enlace }}</a></p>
+                        {% endif %}
+
+                        {% if actividad.fotos %}
+                        <div class="grupo-fotos">
+                            {% for foto in actividad.fotos %}
+                            <figure>
+                                <img src="{{ url_for('static', filename=foto.ruta_archivo) }}" alt="Foto de {{ actividad.nombre }}" style="max-width:200px; border-radius:4px;">
+                                <figcaption>{{ foto.nombre_archivo }}</figcaption>
+                            </figure>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </article>
+                    {% endfor %}
+                {% else %}
+                    <p>Este miembro no tiene actividades registradas aún.</p>
+                {% endif %}
+            </section>
+
+            <a href="{{ url_for('listado_miembros') }}" class="boton">← Volver al Directorio</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Área de Calidad de Vida - Departamento de Ciencias de la Computación</p>
+    </footer>
+</body>
+</html>

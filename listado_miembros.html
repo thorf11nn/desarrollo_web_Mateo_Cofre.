@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directorio de Miembros - Calidad de Vida DCC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <nav aria-label="Navegación principal">
+            <ul>
+                <li><a href="{{ url_for('index') }}">Inicio</a></li>
+                <li><a href="{{ url_for('registro_miembros') }}">Registro de Miembros</a></li>
+                <li><a href="{{ url_for('informar_actividades') }}">Informar Actividad</a></li>
+                <li><a href="{{ url_for('listado_miembros') }}">Directorio</a></li>
+                <li><a href="{{ url_for('indicadores') }}">Indicadores</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="busqueda-filtros">
+            <h1>Directorio de la Comunidad DCC</h1>
+            <p>Listado de miembros registrados en el sistema.</p>
+        </section>
+
+        <section id="lista-resultados">
+            <h2>Resultados</h2>
+
+            {% if paginacion.items %}
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Rol</th>
+                        <th scope="col">Correo electrónico</th>
+                        <th scope="col">Comuna</th>
+                        <th scope="col">Detalle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for miembro in paginacion.items %}
+                    <tr>
+                        <td>{{ miembro.nombre }}</td>
+                        <td>{{ miembro.rol }}</td>
+                        <td>{{ miembro.email }}</td>
+                        <td>{{ miembro.comuna.nombre }}</td>
+                        <td><a href="{{ url_for('detalle_miembro', miembro_id=miembro.id) }}">Ver detalle</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>No hay miembros registrados aún.</p>
+            {% endif %}
+        </section>
+
+        {% if paginacion.pages > 1 %}
+        <nav aria-label="Paginación de resultados">
+            <ul class="paginacion">
+                {% if paginacion.has_prev %}
+                <li>
+                    <a href="{{ url_for('listado_miembros', pagina=paginacion.prev_num) }}" aria-label="Página anterior">« Anterior</a>
+                </li>
+                {% else %}
+                <li><span class="paginacion-deshabilitado">« Anterior</span></li>
+                {% endif %}
+
+                {% for num in paginacion.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                    {% if num %}
+                        {% if num == paginacion.page %}
+                        <li><a href="#" class="activo" aria-current="page">{{ num }}</a></li>
+                        {% else %}
+                        <li><a href="{{ url_for('listado_miembros', pagina=num) }}">{{ num }}</a></li>
+                        {% endif %}
+                    {% else %}
+                        <li><span>…</span></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if paginacion.has_next %}
+                <li>
+                    <a href="{{ url_for('listado_miembros', pagina=paginacion.next_num) }}" aria-label="Página siguiente">Siguiente »</a>
+                </li>
+                {% else %}
+                <li><span class="paginacion-deshabilitado">Siguiente »</span></li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Área de Calidad de Vida - Departamento de Ciencias de la Computación</p>
+    </footer>
+</body>
+</html>
