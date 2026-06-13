@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indicadores y Métricas - Calidad de Vida DCC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <nav aria-label="Navegación principal">
+            <ul>
+                <li><a href="{{ url_for('index') }}">Inicio</a></li>
+                <li><a href="{{ url_for('registro_miembros') }}">Registro de Miembros</a></li>
+                <li><a href="{{ url_for('informar_actividades') }}">Informar Actividad</a></li>
+                <li><a href="{{ url_for('listado_miembros') }}">Directorio</a></li>
+                <li><a href="{{ url_for('indicadores') }}">Indicadores</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="resumen-metricas">
+            <h1>Panel de Indicadores</h1>
+            <p>Visualización de la participación y diversidad de actividades en la comunidad DCC. Los datos provienen de la base de datos en tiempo real.</p>
+
+            <div class="contenedor-graficos">
+                <article class="grafico-card">
+                    <h2>Miembros registrados por día</h2>
+                    <figure>
+                        <canvas id="grafico-miembros-dia" width="400" height="250"></canvas>
+                        <figcaption>Cantidad de miembros que se registraron en cada fecha.</figcaption>
+                    </figure>
+                </article>
+
+                <article class="grafico-card">
+                    <h2>Actividades por tipo</h2>
+                    <figure>
+                        <canvas id="grafico-actividades-tipo" width="400" height="250"></canvas>
+                        <figcaption>Total de actividades extraprogramáticas según categoría.</figcaption>
+                    </figure>
+                </article>
+            </div>
+
+            <div class="contenedor-graficos" style="margin-top: 1.5rem;">
+                <article class="grafico-card" style="grid-column: 1 / -1;">
+                    <h2>Actividades por comuna</h2>
+                    <figure>
+                        <canvas id="grafico-actividades-comuna" width="800" height="300"></canvas>
+                        <figcaption>Total de actividades registradas según la comuna de residencia del miembro.</figcaption>
+                    </figure>
+                </article>
+            </div>
+        </section>
+
+        <section id="volver-portada" style="text-align: center; margin-top: 2rem;">
+            <a href="{{ url_for('index') }}" class="boton">← Volver a la portada</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Área de Calidad de Vida - DCC</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='indicadores.js') }}"></script>
+</body>
+</html>

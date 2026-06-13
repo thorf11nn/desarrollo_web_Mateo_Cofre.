@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ miembro.nombre }} - Calidad de Vida DCC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <nav aria-label="Navegación principal">
+            <ul>
+                <li><a href="{{ url_for('index') }}">Inicio</a></li>
+                <li><a href="{{ url_for('registro_miembros') }}">Registro de Miembros</a></li>
+                <li><a href="{{ url_for('informar_actividades') }}">Informar Actividad</a></li>
+                <li><a href="{{ url_for('listado_miembros') }}">Directorio</a></li>
+                <li><a href="{{ url_for('indicadores') }}">Indicadores</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="detalle-miembro">
+            <h1>{{ miembro.nombre }}</h1>
+
+            <fieldset>
+                <legend>Datos Personales</legend>
+
+                <p><strong>Rol:</strong> {{ miembro.rol }}</p>
+                <p><strong>Correo:</strong> {{ miembro.email }}</p>
+
+                {% if miembro.telefono %}
+                <p><strong>Teléfono:</strong> {{ miembro.telefono }}</p>
+                {% endif %}
+
+                <p><strong>Comuna:</strong> {{ miembro.comuna.nombre }}</p>
+                <p><strong>Región:</strong> {{ miembro.comuna.region.nombre }}</p>
+                <p><strong>Fecha de registro:</strong> {{ miembro.fecha_registro.strftime('%d/%m/%Y %H:%M') }}</p>
+            </fieldset>
+
+            <section id="actividades-miembro">
+                <h2>Actividades registradas</h2>
+
+                {% if miembro.actividades %}
+                    {% for actividad in miembro.actividades %}
+                    <article class="tarjeta">
+                        <h3>{{ actividad.nombre }}</h3>
+                        <p><strong>Categoría:</strong> {{ actividad.tipo }}</p>
+                        <p><strong>Día:</strong> {{ actividad.dia }}</p>
+                        <p><strong>Hora de inicio:</strong> {{ actividad.hora_inicio }}</p>
+                        <p><strong>Duración:</strong> {{ actividad.duracion }}</p>
+
+                        {% if actividad.descripcion %}
+                        <p><strong>Descripción:</strong> {{ actividad.descripcion }}</p>
+                        {% endif %}
+
+                        {% if actividad.enlace %}
+                        <p><strong>Enlace:</strong> <a href="{{ actividad.enlace }}" target="_blank" rel="noopener noreferrer">{{ actividad.enlace }}</a></p>
+                        {% endif %}
+
+                        {% if actividad.fotos %}
+                        <div class="grupo-fotos">
+                            {% for foto in actividad.fotos %}
+                            <figure>
+                                <img src="{{ url_for('static', filename=foto.ruta_archivo) }}" alt="Foto de {{ actividad.nombre }}" style="max-width:200px; border-radius:4px;">
+                                <figcaption>{{ foto.nombre_archivo }}</figcaption>
+                            </figure>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <!-- SECCIÓN DE COMENTARIOS -->
+                        <section class="seccion-comentarios" data-actividad-id="{{ actividad.id }}">
+                            <h4>Comentarios</h4>
+
+                            <div class="lista-comentarios" id="comentarios-{{ actividad.id }}">
+                                <p class="cargando-comentarios">Cargando comentarios...</p>
+                            </div>
+
+                            <form class="form-comentario" data-actividad-id="{{ actividad.id }}" novalidate>
+                                <fieldset class="fieldset-comentario">
+                                    <legend>Dejar un comentario</legend>
+
+                                    <label for="nombre-comentario-{{ actividad.id }}">Nombre *</label>
+                                    <input
+                                        type="text"
+                                        id="nombre-comentario-{{ actividad.id }}"
+                                        name="nombre"
+                                        placeholder="Tu nombre (3-80 caracteres)"
+                                        maxlength="80"
+                                    >
+                                    <span class="error error-nombre-comentario" style="display:none;">El nombre debe tener entre 3 y 80 caracteres.</span>
+
+                                    <label for="texto-comentario-{{ actividad.id }}">Comentario *</label>
+                                    <textarea
+                                        id="texto-comentario-{{ actividad.id }}"
+                                        name="texto"
+                                        rows="4"
+                                        cols="50"
+                                        placeholder="Escribe tu comentario (mínimo 5 caracteres)"
+                                        maxlength="300"
+                                    ></textarea>
+                                    <span class="error error-texto-comentario" style="display:none;">El comentario debe tener al menos 5 caracteres.</span>
+
+                                    <span class="error error-servidor-comentario" style="display:none;"></span>
+
+                                    <button type="submit" class="btn-comentario">Agregar comentario</button>
+                                </fieldset>
+                            </form>
+                        </section>
+                    </article>
+                    {% endfor %}
+                {% else %}
+                    <p>Este miembro no tiene actividades registradas aún.</p>
+                {% endif %}
+            </section>
+
+            <a href="{{ url_for('listado_miembros') }}" class="boton">← Volver al Directorio</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Área de Calidad de Vida - Departamento de Ciencias de la Computación</p>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // ── Helpers ──────────────────────────────────────────────
+
+        function crearElementoComentario(c) {
+            var article = document.createElement('article');
+            article.className = 'item-comentario';
+            article.innerHTML =
+                '<p class="comentario-autor"><strong>' + escaparHTML(c.nombre) + '</strong> ' +
+                '<span class="comentario-fecha">— ' + c.fecha + '</span></p>' +
+                '<p class="comentario-texto">' + escaparHTML(c.texto) + '</p>';
+            return article;
+        }
+
+        function escaparHTML(texto) {
+            var div = document.createElement('div');
+            div.appendChild(document.createTextNode(texto));
+            return div.innerHTML;
+        }
+
+        // ── Cargar comentarios al abrir la página ─────────────────
+
+        document.querySelectorAll('.seccion-comentarios').forEach(function (seccion) {
+            var actividadId = seccion.dataset.actividadId;
+            var contenedor  = document.getElementById('comentarios-' + actividadId);
+
+            fetch('/api/comentarios/' + actividadId)
+                .then(function (r) { return r.json(); })
+                .then(function (lista) {
+                    contenedor.innerHTML = '';
+                    if (lista.length === 0) {
+                        contenedor.innerHTML = '<p class="sin-comentarios">Aún no hay comentarios. ¡Sé el primero!</p>';
+                    } else {
+                        lista.forEach(function (c) {
+                            contenedor.appendChild(crearElementoComentario(c));
+                        });
+                    }
+                })
+                .catch(function () {
+                    contenedor.innerHTML = '<p class="error-carga">No se pudieron cargar los comentarios.</p>';
+                });
+        });
+
+        // ── Enviar nuevo comentario ───────────────────────────────
+
+        document.querySelectorAll('.form-comentario').forEach(function (form) {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                var actividadId  = form.dataset.actividadId;
+                var inputNombre  = form.querySelector('[name="nombre"]');
+                var inputTexto   = form.querySelector('[name="texto"]');
+                var errorNombre  = form.querySelector('.error-nombre-comentario');
+                var errorTexto   = form.querySelector('.error-texto-comentario');
+                var errorServidor = form.querySelector('.error-servidor-comentario');
+                var boton        = form.querySelector('.btn-comentario');
+
+                var nombre = inputNombre.value.trim();
+                var texto  = inputTexto.value.trim();
+                var valido = true;
+
+                // Validación cliente
+                if (nombre.length < 3 || nombre.length > 80) {
+                    errorNombre.style.display = 'block';
+                    valido = false;
+                } else {
+                    errorNombre.style.display = 'none';
+                }
+
+                if (texto.length < 5) {
+                    errorTexto.style.display = 'block';
+                    valido = false;
+                } else {
+                    errorTexto.style.display = 'none';
+                }
+
+                errorServidor.style.display = 'none';
+
+                if (!valido) { return; }
+
+                boton.disabled = true;
+                boton.textContent = 'Enviando...';
+
+                fetch('/api/comentarios', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        actividad_id: actividadId,
+                        nombre: nombre,
+                        texto: texto
+                    })
+                })
+                .then(function (r) { return r.json(); })
+                .then(function (respuesta) {
+                    if (respuesta.ok) {
+                        var contenedor = document.getElementById('comentarios-' + actividadId);
+                        // Quitar el mensaje "sin comentarios" si existe
+                        var sinComentarios = contenedor.querySelector('.sin-comentarios');
+                        if (sinComentarios) { sinComentarios.remove(); }
+
+                        contenedor.appendChild(crearElementoComentario(respuesta.comentario));
+                        inputNombre.value = '';
+                        inputTexto.value  = '';
+                    } else {
+                        errorServidor.textContent = respuesta.errores.join(' ');
+                        errorServidor.style.display = 'block';
+                    }
+                })
+                .catch(function () {
+                    errorServidor.textContent = 'Error de red. Intenta nuevamente.';
+                    errorServidor.style.display = 'block';
+                })
+                .finally(function () {
+                    boton.disabled = false;
+                    boton.textContent = 'Agregar comentario';
+                });
+            });
+        });
+
+    });
+    </script>
+</body>
+</html>
