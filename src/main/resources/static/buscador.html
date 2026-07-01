@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Actividades - Calidad de Vida DCC</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav aria-label="Navegación principal">
+            <ul>
+                <li><a href="http://127.0.0.1:5000/">Inicio (Flask)</a></li>
+                <li><a href="buscador.html">Buscador de Actividades</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="seccion-buscador">
+            <h1>Buscador de Actividades</h1>
+            <p>Escribe al menos 3 caracteres para buscar por nombre, descripción o comuna.</p>
+
+            <label for="input-buscar">Buscar actividad</label>
+            <input type="text" id="input-buscar" placeholder="Ej: Fútbol, Cabrero, Dibujo digital...">
+
+            <div id="resultados-buscador"></div>
+        </section>
+
+        <p><a href="http://127.0.0.1:5000/" class="boton">← Volver a la portada</a></p>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Área de Calidad de Vida - Departamento de Ciencias de la Computación</p>
+    </footer>
+
+    <script src="buscador.js"></script>
+</body>
+</html>
